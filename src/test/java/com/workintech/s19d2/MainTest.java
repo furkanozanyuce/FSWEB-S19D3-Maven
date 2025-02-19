@@ -231,9 +231,9 @@ class MainTest {
     @Test
     @DisplayName("Register New Member Successfully")
     void registerNewMemberSuccessfully() {
-        given(mockMemberRepository.findByEmail(anyString())).willReturn(Optional.empty());
+        given(mockMemberRepository.findUserByEmail(anyString())).willReturn(Optional.empty());
         given(passwordEncoder.encode(anyString())).willReturn("password");
-        given(mockRoleRepository.findByAuthority("ADMIN")).willReturn(Optional.of(role));
+        given(mockRoleRepository.findUserByAuthority("ADMIN")).willReturn(Optional.of(role));
         given(mockMemberRepository.save(any(Member.class))).willReturn(member);
 
         Member registeredMember = authenticationService.register("test@example.com", "password");
@@ -246,7 +246,7 @@ class MainTest {
     @Test
     @DisplayName("Register Member Throws Exception When Email Exists")
     void registerMemberThrowsExceptionWhenEmailExists() {
-        given(mockMemberRepository.findByEmail(anyString())).willReturn(Optional.of(member));
+        given(mockMemberRepository.findUserByEmail(anyString())).willReturn(Optional.of(member));
 
         assertThatThrownBy(() -> authenticationService.register("test@example.com", "password"))
                 .isInstanceOf(RuntimeException.class)
